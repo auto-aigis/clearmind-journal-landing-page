@@ -25,16 +25,13 @@ function LoginForm() {
     e.preventDefault();
     setError('');
     setUnverified(false);
-const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError('');
-    setUnverified(false);
     setLoading(true);
     try {
       await authApi.login(email, password);
       await refresh();
       router.push('/dashboard');
     } catch (err) {
+      const msg = err instanceof Error ? err.message : 'Login failed.';
       if (msg === 'email_not_verified' || msg.includes('not verified')) {
         setUnverified(true);
         setError('Please verify your email first.');
